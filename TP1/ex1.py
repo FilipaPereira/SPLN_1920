@@ -5,7 +5,6 @@ import fileinput
 import re
 import itertools
 
-pares = []
 
 def getTexto():
     texto = ""
@@ -36,6 +35,7 @@ def frases(texto): ##Coloca @ no inicio das palavras que começam as frases
 
 def getPairs(texto):
     frs = [] 
+    pares = []
     frs = texto.split('@')
     for fr in frs:
         aux = re.findall('{[\w|\s]+}', fr) ##isto encontras as entidades da frase
@@ -47,9 +47,35 @@ def getPairs(texto):
         if len(ents) > 1:
             for pair in itertools.combinations(ents,2): ##gera combinaçoes e guarda os pares
                 pares.append(pair)
-            
+    return pares    
         
 
-##def cleanupPairs(texto):
+def cleanupPairs(pares):
+    ##ssprint(len(pares))
+    pairs = []
+    ##Termos que aparecem a maiuscula mas que nao correspondem a entidades
+    terms = ["I", "And", "They", "Well", "Now", "Then", "How", "My", "You", "Yes", "No", "In", "Oh", "An", "Yeh", "But",
+     "He", "Still", "There", "See", "Mrs", "This", "It", "Stop", "Not", "Or", "Thanks", "What", "Where", "Something"]
+    i = 0
+    for p in pares:
+        if p[0] not in terms and p[1] not in terms:
+            pairs.append(p)
+        else:
+            i+=1
+    
+    ##print(i) ##Pares removidos
+    ##print(len(pairs))
+    return pairs
 
-getPairs(entidades(frases(getTexto())))
+''' 
+def freq(pairs):
+    for p in pairs:
+        i = pairs.count(p)
+        if i > 1:
+            pairs.remove(p)
+        print(p, i)
+ '''   
+
+p = getPairs(entidades(frases(getTexto())))
+#freq(cleanupPairs(p))
+print(cleanupPairs(p))
