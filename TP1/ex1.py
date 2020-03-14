@@ -67,15 +67,16 @@ def cleanupPairs(pares):
     ##print(len(pairs))
     return pairs
 
-''' 
+
 def freq(pairs):
     for p in pairs:
         i = pairs.count(p)
-        if i > 1:
+        if i<3:
+          for j in range(0, i):
             pairs.remove(p)
-        print(p, i)
- '''   
+    #print(pairs)
+ 
 
 p = getPairs(entidades(frases(getTexto())))
-#freq(cleanupPairs(p))
+freq(cleanupPairs(p))
 print(cleanupPairs(p))
