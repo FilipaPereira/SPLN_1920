@@ -14,6 +14,15 @@ def getTexto():
 
     return texto
 
+def frases(texto): ##Coloca @ no inicio das palavras que começam as frases
+    exp1 = r'(\n\n+\s*)([A-Z])' ##refere-se as frases que iniciam os parágrafos
+    exp2 = r'([a-z][.?!]+[\s]*)([A-Z])' ##refere-se as palavras após ponto final/exclamação/interrogação
+
+    texto = re.sub(exp1,r'\1@\2',texto)
+    texto = re.sub(exp2,r'\1@\2',texto)
+    return texto
+
+
 def entidades(texto):
     maius = r'(?:[A-Z]\w+(?:[-\']\w+)*|[A-Z]\.|[IVXLCDM]+)'
     de = r'(?:de|da|dos|das)' 
@@ -22,14 +31,6 @@ def entidades(texto):
     ent = f"([^@\w])({maius}(?:{s}{maius}|{s}{de}{s}{maius})*)"
 
     texto = re.sub(ent, r'\1{\2}', texto)
-    return texto
-
-def frases(texto): ##Coloca @ no inicio das palavras que começam as frases
-    exp1 = r'(\n\n+\s*)([A-Z])' ##refere-se as frases que iniciam os parágrafos
-    exp2 = r'([a-z][.?!]+[\s]*)([A-Z])' ##refere-se as palavras após ponto final/exclamação/interrogação
-
-    texto = re.sub(exp1,r'\1@\2',texto)
-    texto = re.sub(exp2,r'\1@\2',texto)
     return texto
 
 
@@ -51,32 +52,60 @@ def getPairs(texto):
         
 
 def cleanupPairs(pares):
-    ##ssprint(len(pares))
     pairs = []
     ##Termos que aparecem a maiuscula mas que nao correspondem a entidades
-    terms = ["I", "And", "They", "Well", "Now", "Then", "How", "My", "You", "Yes", "No", "In", "Oh", "An", "Yeh", "But",
-     "He", "Still", "There", "See", "Mrs", "This", "It", "Stop", "Not", "Or", "Thanks", "What", "Where", "Something"]
-    i = 0
+    terms = ["I", "We", "Us", "They", "He", "Her", "Them", "It", "You", "Your", "My", "His", "And", "But", "Still", "Then", 
+    "There", "That", "This", "The", "How","Now", "So", "Are", "Not", "Or", "What", "Where", "Which", "Why", "Well", "See", 
+    "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An"]
+
     for p in pares:
-        if p[0] not in terms and p[1] not in terms:
+        if p[0] not in terms and p[1] not in terms and p[0] != p[1]:
             pairs.append(p)
-        else:
-            i+=1
     
-    ##print(i) ##Pares removidos
-    ##print(len(pairs))
     return pairs
 
 
-def freq(pairs):
+def groupAndRemove(pairs): ##Agrupa os pares com o respetivo nr de ocorrencias e remove os que têm menos que 5 ocorrencias
+    pairOccur = {}
     for p in pairs:
-        i = pairs.count(p)
-        if i<3:
-          for j in range(0, i):
-            pairs.remove(p)
-    #print(pairs)
- 
+        if p in pairOccur:
+            occ = pairOccur.get(p)
+            occ += 1
+            pairOccur.update({p : occ})
+        else:
+            if (p[1],p[0]) in pairOccur:
+                inv = (p[1],p[0])
+                occ = pairOccur.get(inv)
+                occ += 1
+                pairOccur.update({inv : occ})
+            else:
+                pairOccur[p] = 1
+
+    for k,v in list(pairOccur.items()): ##remover os que têm frequencia menor que 5
+        if v < 5:
+            pairOccur.pop(k)
+
+    return pairOccur
+    
+
+def interpretador(pairOccur):
+    char = input("Enter character from Harry Potter: ")
+    top = input("Top K relationships: ")
+    rels = {}
+    i = 0
+    for k,v in pairOccur.items():
+        if k[0] == char or k[1] == char:
+            rels[k] = v
+
+    if len(rels) == 0:
+        print("No relevant relationships found...")
+
+    for w,v in sorted(rels.items(),key= lambda x : x[1], reverse=True):
+        if i < int(top):
+            print(w," --> ",v, "occurrences.")
+            i+=1
+
 
 p = getPairs(entidades(frases(getTexto())))
-freq(cleanupPairs(p))
-print(cleanupPairs(p))
+occur = groupAndRemove(cleanupPairs(p))
+interpretador(occur)
