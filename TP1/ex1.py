@@ -56,7 +56,7 @@ def cleanupPairs(pares):
     ##Termos que aparecem a maiuscula mas que nao correspondem a entidades
     terms = ["I", "We", "Us", "They", "He", "Her", "Them", "It", "You", "Your", "My", "His", "And", "But", "Still", "Then", 
     "There", "That", "This", "The", "How","Now", "So", "Are", "Not", "Or", "What", "Where", "Which", "Why", "Well", "See", 
-    "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An"]
+    "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An", "All", "Just"]
 
     for p in pares:
         if p[0] not in terms and p[1] not in terms and p[0] != p[1]:
