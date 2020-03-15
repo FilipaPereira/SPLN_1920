@@ -4,6 +4,11 @@
 import fileinput
 import re
 import itertools
+import networkx as nx
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set()
 
 
 def getTexto():
@@ -56,7 +61,10 @@ def cleanupPairs(pares):
     ##Termos que aparecem a maiuscula mas que nao correspondem a entidades
     terms = ["I", "We", "Us", "They", "He", "Her", "Them", "It", "You", "Your", "My", "His", "And", "But", "Still", "Then", 
     "There", "That", "This", "The", "How","Now", "So", "Are", "Not", "Or", "What", "Where", "Which", "Why", "Well", "See", 
-    "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An", "All", "Just"]
+    "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An", "All", "Just","Go","Good","If I",
+    "If","Do","KILL HIM","She","D","Professor","Invisibility", "GRYFFINDORS SCORE", "Of","Want","Say","Mirror","OUCH","Listen",
+    "Who","Page","Can","Christmas","Shut","Magic","Ministry","Er","Nothing","Right","Never","London","Yeh","House","Come",
+    "Dark Arts","Look","Lucky"]
 
     for p in pares:
         if p[0] not in terms and p[1] not in terms and p[0] != p[1]:
@@ -106,6 +114,98 @@ def interpretador(pairOccur):
             i+=1
 
 
+
+'''
+
+##Funcao que limita o numero de relacoes, mostrando apenas as 20 maiores
+
+def limita_Grafo(pairs):
+    dicionario={}
+ 
+    for w,v in sorted(pairs.items(),key= lambda x : x[1], reverse=True):
+    
+        dicionario[w] = v;
+
+
+    return (list(dicionario.items())[:20])
+    
+    
+'''
+def limita_Grafo(pairs):
+    lista =[]
+    lista2=[]
+        
+
+    for w,v in sorted(pairs.items(),key= lambda x : x[1], reverse=True):
+    
+        lista.append(w);
+
+    for j in range(20):
+        lista2.append(lista[j])
+        
+
+    return lista2
+
+
+def criaGrafo(pairs):
+    lista_pares=[];
+    g= nx.DiGraph()
+   
+    node_sizes=[]
+    
+    for k,v in pairs.items():
+         lista_pares.append(k)
+
+    resposta =  input("Do you want to see all the relationships? (yes|no)")
+
+    if(resposta=="yes"):
+
+        for i in  lista_pares: 
+          g.add_edge(i[0],i[1]);
+    
+    elif(resposta == "no"): 
+            nome = input("Enter character from Harry Potter: ")
+            for i in  lista_pares:
+                 if (i[0]==nome or i[1] ==nome): 
+                     g.add_edge(i[0],i[1]);
+    else:
+        print("Error: follow the instructions!!!")
+
+    for n in g:
+        node_sizes.append(1000)
+
+
+    print(nx.info(g))
+   
+
+    plt.figure()
+    nx.draw_networkx(g,pos=nx.spring_layout(g,dim=2,k=1.5),node_size=node_sizes)
+    plt.show()    
+
+
+
+
+   
+
+
+
+
 p = getPairs(entidades(frases(getTexto())))
 occur = groupAndRemove(cleanupPairs(p))
 interpretador(occur)
+#limit=limita_Grafo(occur)
+criaGrafo(occur)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
