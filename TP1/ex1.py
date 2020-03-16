@@ -19,9 +19,9 @@ def getTexto():
 
     return texto
 
-def frases(texto): ##Coloca @ no inicio das palavras que começam as frases
-    exp1 = r'(\n\n+\s*)([A-Z])' ##refere-se as frases que iniciam os parágrafos
-    exp2 = r'([a-z][.?!]+[\s]*)([A-Z])' ##refere-se as palavras após ponto final/exclamação/interrogação
+def frases(texto): 
+    exp1 = r'(\n\n+\s*)([A-Z])' 
+    exp2 = r'([a-z][.?!]+[\s]*)([A-Z])' 
 
     texto = re.sub(exp1,r'\1@\2',texto)
     texto = re.sub(exp2,r'\1@\2',texto)
@@ -44,21 +44,21 @@ def getPairs(texto):
     pares = []
     frs = texto.split('@')
     for fr in frs:
-        aux = re.findall('{[\w|\s]+}', fr) ##isto encontras as entidades da frase
+        aux = re.findall('{[\w|\s]+}', fr)
         ents = []
         for e in aux:
-            e = e[1:-1] ##retirar as chavetas, nao consegui apanhar sem elas
+            e = e[1:-1]
             ents.append(e)
 
         if len(ents) > 1:
-            for pair in itertools.combinations(ents,2): ##gera combinaçoes e guarda os pares
+            for pair in itertools.combinations(ents,2): 
                 pares.append(pair)
     return pares    
         
 
 def cleanupPairs(pares):
     pairs = []
-    ##Termos que aparecem a maiuscula mas que nao correspondem a entidades
+
     terms = ["I", "We", "Us", "They", "He", "Her", "Them", "It", "You", "Your", "My", "His", "And", "But", "Still", "Then", 
     "There", "That", "This", "The", "How","Now", "So", "Are", "Not", "Or", "What", "Where", "Which", "Why", "Well", "See", 
     "Something", "Thanks", "Stop", "Yes", "Yeah", "No", "In", "Oh", "Mrs", "Mr", "An", "All", "Just","Go","Good","If I",
@@ -73,7 +73,7 @@ def cleanupPairs(pares):
     return pairs
 
 
-def groupAndRemove(pairs): ##Agrupa os pares com o respetivo nr de ocorrencias e remove os que têm menos que 5 ocorrencias
+def groupAndRemove(pairs):
     pairOccur = {}
     for p in pairs:
         if p in pairOccur:
@@ -89,7 +89,7 @@ def groupAndRemove(pairs): ##Agrupa os pares com o respetivo nr de ocorrencias e
             else:
                 pairOccur[p] = 1
 
-    for k,v in list(pairOccur.items()): ##remover os que têm frequencia menor que 5
+    for k,v in list(pairOccur.items()):
         if v < 5:
             pairOccur.pop(k)
 
@@ -112,39 +112,6 @@ def interpretador(pairOccur):
         if i < int(top):
             print(w," --> ",v, "occurrences.")
             i+=1
-
-
-
-'''
-
-##Funcao que limita o numero de relacoes, mostrando apenas as 20 maiores
-
-def limita_Grafo(pairs):
-    dicionario={}
- 
-    for w,v in sorted(pairs.items(),key= lambda x : x[1], reverse=True):
-    
-        dicionario[w] = v;
-
-
-    return (list(dicionario.items())[:20])
-    
-    
-'''
-def limita_Grafo(pairs):
-    lista =[]
-    lista2=[]
-        
-
-    for w,v in sorted(pairs.items(),key= lambda x : x[1], reverse=True):
-    
-        lista.append(w);
-
-    for j in range(20):
-        lista2.append(lista[j])
-        
-
-    return lista2
 
 
 def criaGrafo(pairs):
@@ -184,16 +151,9 @@ def criaGrafo(pairs):
 
 
 
-
-   
-
-
-
-
 p = getPairs(entidades(frases(getTexto())))
 occur = groupAndRemove(cleanupPairs(p))
 interpretador(occur)
-#limit=limita_Grafo(occur)
 criaGrafo(occur)
 
 
