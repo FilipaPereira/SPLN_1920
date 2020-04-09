@@ -115,26 +115,26 @@ def interpretador(pairOccur):
 
 
 def criaGrafo(pairs):
-    lista_pares=[];
-    g= nx.DiGraph()
+    lista_pares=[]
+    g = nx.DiGraph()
    
     node_sizes=[]
     
     for k,v in pairs.items():
          lista_pares.append(k)
 
-    resposta =  input("Do you want to see all the relationships? (yes|no)")
+    resposta = input("Do you want to see all the relationships? (yes|no)")
 
     if(resposta=="yes"):
 
         for i in  lista_pares: 
-          g.add_edge(i[0],i[1]);
+          g.add_edge(i[0],i[1])
     
     elif(resposta == "no"): 
             nome = input("Enter character from Harry Potter: ")
             for i in  lista_pares:
                  if (i[0]==nome or i[1] ==nome): 
-                     g.add_edge(i[0],i[1]);
+                     g.add_edge(i[0],i[1])
     else:
         print("Error: follow the instructions!!!")
 
