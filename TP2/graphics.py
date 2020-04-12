@@ -1,3 +1,5 @@
+import re
+
 import matplotlib.pyplot as plt
 
 
@@ -22,7 +24,7 @@ def personal_pronouns(file):
         prs.append(k)
         occurs.append(v)
 
-    plt.suptitle('Personal Pronouns')
+    plt.suptitle('Personal Pronouns in Harry Potter')
 
     plt.subplot(121)
     # plt.plot(list(pronouns.values()), list(pronouns.keys()), marker='o')
@@ -36,32 +38,50 @@ def personal_pronouns(file):
     plt.show()
 
 
+def godsLusiadas(file):
+    godsOccur = {}
+    gods = ['Marte', 'Neptuno', 'Júpiter', 'Baco', 'Vénus', 'Mercúrio', 'Apolo', 'Minerva', 'Juno', 'Diana',
+            'Vulcano', 'Saturno', 'Plutão']
+
+    for w in file.read().split():
+        w = re.sub(r'[^\w]', '', w)
+        if w in gods:
+            godsOccur[w] = godsOccur.get(w, 0) + 1
+
+    print(godsOccur)
+    names = list(godsOccur.keys())
+    occurs = list(godsOccur.values())
+    plt.bar(names, occurs, width=0.5, color='orange')
+    plt.title('Appearances of the Roman Gods in "Os Lusíadas"')
+    plt.xlabel('Gods')
+    plt.ylabel('Number of Mentions')
+    plt.show()
+
+
 def prompter():
     while 1:
-        file = input('Insert the name of the file to be processed: ')
-        file = 'harryPotter.txt' ## just to be easier to test
-
-        f = open(file, 'r', encoding='utf-8')
+        file1 = 'harryPotter.txt'
+        file2 = 'Lusiadas.txt'
 
         print('What do you which to see?')
-        print('1 - PieChart and BarPlot about occurrences of personal pronouns')
-        print('2 - Stuff')
-        ##Polarities maybe? use stacked or side by side barplots
+        print('1 - Piechart and Plot about occurrences of personal pronouns in Harry Potter')
+        print('2 - Barplot displaying the frequency of the gods appearances in "Os Lusíadas"')
         # something to draw scatterplot, histogram and maybe a table
-        # 3d graphics is not worth it
+        ##entidades por canto --> tabela ??
         print('0 - Quit')
         choice = input('Option:')
         if choice == '1':
+            f = open(file1, 'r', encoding='utf-8')
             personal_pronouns(f)
-        elif choice == '2':
-            print('Not available')
-        elif choice == '0':
             f.close()
+        elif choice == '2':
+            f = open(file2, 'r', encoding='utf-8')
+            godsLusiadas(f)
+            f.close()
+        elif choice == '0':
             break
         else:
             print('Wrong option!')
-        f.close()
 
 
 prompter()
-
