@@ -1,6 +1,6 @@
 import re
 import fileinput
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 
 def wordPolarities():
@@ -22,6 +22,8 @@ def polaritiesLusiadas(file):
     total_neg = 0
     chapter = 0
     palavras = 0
+    chapters=[]
+    performance = []
 
     for line in file.read().split('\n'):
         word = line.split()
@@ -34,6 +36,8 @@ def polaritiesLusiadas(file):
                 total_pos = 0
                 palavras = 0
                 chapter += 1
+                chapters.append(chapter)
+                
             else:
                 w = word[0].lower()
                 x = polarities.get(w, 0)
@@ -42,12 +46,38 @@ def polaritiesLusiadas(file):
                 elif x == 1:
                     total_pos += 1
                 palavras += 1
+    positiveByChapter.append(total_pos)
+    negativeByChapter.append(total_neg)
+    wordsByChapter.append(palavras)
     positiveByChapter.pop(0)
     negativeByChapter.pop(0)
     wordsByChapter.pop(0)
+  
     print('POS: ', positiveByChapter)
     print('NEG: ', negativeByChapter)
     print('WORDS: ', wordsByChapter)
+    print(chapters)
+
+    #barplot
+
+    i = 0
+	
+    while(i < len(chapters)):
+        performance.append(- negativeByChapter.__getitem__(i) + positiveByChapter.__getitem__(i))
+        i += 1
+
+	
+    objects = chapters
+    
+
+    y_pos = np.arange(len(objects))
+
+    plt.bar(y_pos, performance, align='center', alpha=0.5)
+    plt.xticks(y_pos, objects)
+    plt.ylabel('Polaridade de palavras')
+    plt.xlabel('Canto')
+    plt.title('Polaridade por Canto')    
+    plt.show()
 
 def wordcountPronouns(file):
     wcPronouns = {}
