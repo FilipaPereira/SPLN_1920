@@ -1,6 +1,7 @@
 import re
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def wordcountPronouns(file):
@@ -51,11 +52,40 @@ def godsLusiadas(file):
     print(godsOccur)
     names = list(godsOccur.keys())
     occurs = list(godsOccur.values())
+
+    # histograma
     plt.bar(names, occurs, width=0.5, color='orange')
     plt.title('Appearances of the Roman Gods in "Os Lusíadas"')
     plt.xlabel('Gods')
     plt.ylabel('Number of Mentions')
+
+    #grafico donut
+    
+
+    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+
+    wedges, texts = ax.pie(occurs, wedgeprops=dict(width=0.5), startangle=-40)
+
+    bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+    kw = dict(arrowprops=dict(arrowstyle="-"),
+            bbox=bbox_props, zorder=0, va="center")
+
+    for i, p in enumerate(wedges):
+        ang = (p.theta2 - p.theta1)/2. + p.theta1
+        y = np.sin(np.deg2rad(ang))
+        x = np.cos(np.deg2rad(ang))
+        horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+        connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+        kw["arrowprops"].update({"connectionstyle": connectionstyle})
+        ax.annotate(names[i], xy=(x, y), xytext=(1.35*np.sign(x), 1.4*y),
+                    horizontalalignment=horizontalalignment, **kw)
+
+    ax.set_title("Deuses Romanos")
     plt.show()
+
+
+
+
 
 
 def prompter():
