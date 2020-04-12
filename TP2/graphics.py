@@ -1,8 +1,53 @@
 import re
-
+import fileinput
 import matplotlib.pyplot as plt
 import numpy as np
 
+def wordPolarities():
+    polarities = {}
+    for line in fileinput.input(['sentilex2.txt']):
+        word = re.split(',', line)[0]
+        aux = re.search(r'N0=(\-?\d+)', line)
+        if aux:
+            polarity = aux.group(1)
+            polarities[word] = int(polarity)
+    return polarities
+
+def polaritiesLusiadas(file):
+    polarities = wordPolarities()
+    positiveByChapter = []
+    negativeByChapter = []
+    wordsByChapter = []
+    total_pos = 0
+    total_neg = 0
+    chapter = 0
+    palavras = 0
+
+    for line in file.read().split('\n'):
+        word = line.split()
+        if len(word) == 3:
+            if word[0] == 'Canto':
+                positiveByChapter.append(total_pos)
+                negativeByChapter.append(total_neg)
+                wordsByChapter.append(palavras)
+                total_neg = 0
+                total_pos = 0
+                palavras = 0
+                chapter += 1
+            else:
+                w = word[0].lower()
+                x = polarities.get(w, 0)
+                if x == -1:
+                    total_neg += 1
+                elif x == 1:
+                    total_pos += 1
+                palavras += 1
+    positiveByChapter.pop(0)
+    negativeByChapter.pop(0)
+    wordsByChapter.pop(0)
+    print('POS: ', positiveByChapter)
+    print('NEG: ', negativeByChapter)
+    print('WORDS: ', wordsByChapter)
 
 def wordcountPronouns(file):
     wcPronouns = {}
@@ -42,18 +87,17 @@ def personal_pronouns(file):
 def godsLusiadas(file):
     godsOccur = {}
     gods = ['Marte', 'Neptuno', 'Júpiter', 'Baco', 'Vénus', 'Mercúrio', 'Apolo', 'Minerva', 'Juno', 'Diana',
-            'Vulcano', 'Saturno', 'Plutão']
+            'Vulcano', 'Saturno']
 
     for w in file.read().split():
         w = re.sub(r'[^\w]', '', w)
         if w in gods:
             godsOccur[w] = godsOccur.get(w, 0) + 1
 
-    print(godsOccur)
     names = list(godsOccur.keys())
     occurs = list(godsOccur.values())
 
-    # histograma
+    #barplot
     plt.bar(names, occurs, width=0.5, color='orange')
     plt.title('Appearances of the Roman Gods in "Os Lusíadas"')
     plt.xlabel('Gods')
@@ -61,7 +105,6 @@ def godsLusiadas(file):
 
     #grafico donut
     
-
     fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
     wedges, texts = ax.pie(occurs, wedgeprops=dict(width=0.5), startangle=-40)
@@ -80,11 +123,8 @@ def godsLusiadas(file):
         ax.annotate(names[i], xy=(x, y), xytext=(1.35*np.sign(x), 1.4*y),
                     horizontalalignment=horizontalalignment, **kw)
 
-    ax.set_title("Deuses Romanos")
+    ax.set_title('Roman Gods')
     plt.show()
-
-
-
 
 
 
@@ -92,12 +132,12 @@ def prompter():
     while 1:
         file1 = 'harryPotter.txt'
         file2 = 'Lusiadas.txt'
+        file3 = 'Lusiadas.tagged'
 
         print('What do you which to see?')
-        print('1 - Piechart and Plot about occurrences of personal pronouns in Harry Potter')
-        print('2 - Barplot displaying the frequency of the gods appearances in "Os Lusíadas"')
-        # something to draw scatterplot, histogram and maybe a table
-        ##entidades por canto --> tabela ??
+        print('1 - Occurrences of personal pronouns in Harry Potter')
+        print('2 - Appearances of the Gods in "Os Lusíadas"')
+        print('3 - Word Polarities by chapter in "Os Lusíadas"')
         print('0 - Quit')
         choice = input('Option:')
         if choice == '1':
@@ -107,6 +147,10 @@ def prompter():
         elif choice == '2':
             f = open(file2, 'r', encoding='utf-8')
             godsLusiadas(f)
+            f.close()
+        elif choice == '3':
+            f = open(file3, 'r', encoding='utf-8')
+            polaritiesLusiadas(f)
             f.close()
         elif choice == '0':
             break
