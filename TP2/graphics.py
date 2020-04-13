@@ -1,7 +1,9 @@
 import re
 import fileinput
-import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
+import matplotlib.pyplot as plt
+plt.rcdefaults()
+
 
 def wordPolarities():
     polarities = {}
@@ -13,6 +15,7 @@ def wordPolarities():
             polarities[word] = int(polarity)
     return polarities
 
+
 def polaritiesLusiadas(file):
     polarities = wordPolarities()
     positiveByChapter = []
@@ -22,7 +25,7 @@ def polaritiesLusiadas(file):
     total_neg = 0
     chapter = 0
     palavras = 0
-    chapters=[]
+    chapters = []
     performance = []
 
     for line in file.read().split('\n'):
@@ -37,7 +40,7 @@ def polaritiesLusiadas(file):
                 palavras = 0
                 chapter += 1
                 chapters.append(chapter)
-                
+
             else:
                 w = word[0].lower()
                 x = polarities.get(w, 0)
@@ -52,32 +55,29 @@ def polaritiesLusiadas(file):
     positiveByChapter.pop(0)
     negativeByChapter.pop(0)
     wordsByChapter.pop(0)
-  
+
     print('POS: ', positiveByChapter)
     print('NEG: ', negativeByChapter)
     print('WORDS: ', wordsByChapter)
-    print(chapters)
 
-    #barplot
-
+    #Barplot
     i = 0
-	
-    while(i < len(chapters)):
-        performance.append(- negativeByChapter.__getitem__(i) + positiveByChapter.__getitem__(i))
+
+    while i < len(chapters):
+        performance.append(- negativeByChapter[i] + positiveByChapter[i])
         i += 1
 
-	
     objects = chapters
-    
 
     y_pos = np.arange(len(objects))
 
     plt.bar(y_pos, performance, align='center', alpha=0.5)
     plt.xticks(y_pos, objects)
-    plt.ylabel('Polaridade de palavras')
+    plt.ylabel('Word Polarity')
     plt.xlabel('Canto')
-    plt.title('Polaridade por Canto')    
+    plt.title('Polarity by Canto')
     plt.show()
+
 
 def wordcountPronouns(file):
     wcPronouns = {}
@@ -103,8 +103,6 @@ def personal_pronouns(file):
     plt.suptitle('Personal Pronouns in Harry Potter')
 
     plt.subplot(121)
-    # plt.plot(list(pronouns.values()), list(pronouns.keys()), marker='o')
-    # desta maneira n fica uma curva direita pq n esta ordenado
     plt.plot(occurs, prs, marker='o')
     plt.ylabel('Personal Pronouns')
     plt.xlabel('Number of Ocurrences')
@@ -127,35 +125,34 @@ def godsLusiadas(file):
     names = list(godsOccur.keys())
     occurs = list(godsOccur.values())
 
-    #barplot
+    #Barplot
     plt.bar(names, occurs, width=0.5, color='orange')
     plt.title('Appearances of the Roman Gods in "Os Lusíadas"')
     plt.xlabel('Gods')
     plt.ylabel('Number of Mentions')
 
-    #grafico donut
-    
+    #Donutplot
+
     fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
     wedges, texts = ax.pie(occurs, wedgeprops=dict(width=0.5), startangle=-40)
 
     bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
     kw = dict(arrowprops=dict(arrowstyle="-"),
-            bbox=bbox_props, zorder=0, va="center")
+              bbox=bbox_props, zorder=0, va="center")
 
     for i, p in enumerate(wedges):
-        ang = (p.theta2 - p.theta1)/2. + p.theta1
+        ang = (p.theta2 - p.theta1) / 2. + p.theta1
         y = np.sin(np.deg2rad(ang))
         x = np.cos(np.deg2rad(ang))
         horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
         connectionstyle = "angle,angleA=0,angleB={}".format(ang)
         kw["arrowprops"].update({"connectionstyle": connectionstyle})
-        ax.annotate(names[i], xy=(x, y), xytext=(1.35*np.sign(x), 1.4*y),
+        ax.annotate(names[i], xy=(x, y), xytext=(1.35 * np.sign(x), 1.4 * y),
                     horizontalalignment=horizontalalignment, **kw)
 
     ax.set_title('Roman Gods')
     plt.show()
-
 
 
 def prompter():
@@ -165,9 +162,9 @@ def prompter():
         file3 = 'Lusiadas.tagged'
 
         print('What do you which to see?')
-        print('1 - Occurrences of personal pronouns in Harry Potter')
+        print('1 - Occurrences of personal pronouns in "Harry Potter"')
         print('2 - Appearances of the Gods in "Os Lusíadas"')
-        print('3 - Word Polarities by chapter in "Os Lusíadas"')
+        print('3 - Word Polarities by canto in "Os Lusíadas"')
         print('0 - Quit')
         choice = input('Option:')
         if choice == '1':
