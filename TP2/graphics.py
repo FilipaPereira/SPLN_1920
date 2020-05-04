@@ -164,11 +164,28 @@ def mar_words(file):
         if re.search(mar_w, w):
             marOccur[w] = marOccur.get(w, 0) + 1
 
-    names = list(marOccur.keys())
-    occurs = list(marOccur.values())
-    print(names)
-    print(occurs)
+    
+    terms = ["maridos","marchetados","maravilha","maravilhas","maravilhando","maravilhados","marços","marcheatdas","marítimas","marítimos",
+    "maravilhado","marchetada","marido","marchetadas","marítimo", "marlotas", "marchetado","marinheiro"]
 
+    for p in terms:
+        if p in marOccur :
+            del marOccur[p]
+
+    names = list(marOccur.keys())
+    values = list(marOccur.values())
+    print(names)
+    print(values)
+   
+    
+   
+
+    fig, axs = plt.subplots(1, 3, figsize=(9, 3), sharey=True)
+    axs[0].bar(names, values)
+    axs[1].scatter(names, values)
+    axs[2].plot(names, values)
+    fig.suptitle('Categorical Plotting')
+    plt.show()
 
 def prompter():
     while 1:
