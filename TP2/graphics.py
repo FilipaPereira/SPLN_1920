@@ -155,6 +155,21 @@ def godsLusiadas(file):
     plt.show()
 
 
+def mar_words(file):
+    marOccur = {}
+    mar_w = r'(^(mar)[^\s,;.\n]*)' 
+
+    for w in file.read().split():
+        w = re.sub(r'[^\w]', '', w)
+        if re.search(mar_w, w):
+            marOccur[w] = marOccur.get(w, 0) + 1
+
+    names = list(marOccur.keys())
+    occurs = list(marOccur.values())
+    print(names)
+    print(occurs)
+
+
 def prompter():
     while 1:
         file1 = 'harryPotter.txt'
@@ -165,6 +180,7 @@ def prompter():
         print('1 - Occurrences of personal pronouns in "Harry Potter"')
         print('2 - Appearances of the Gods in "Os Lusíadas"')
         print('3 - Word Polarities by canto in "Os Lusíadas"')
+        print('4 - Ocurrences of words beginning with "mar" in "Os Lusíadas"')
         print('0 - Quit')
         choice = input('Option:')
         if choice == '1':
@@ -178,6 +194,10 @@ def prompter():
         elif choice == '3':
             f = open(file3, 'r', encoding='utf-8')
             polaritiesLusiadas(f)
+            f.close()
+        elif choice == '4':
+            f = open(file2, 'r', encoding='utf-8')
+            mar_words(f)
             f.close()
         elif choice == '0':
             break
