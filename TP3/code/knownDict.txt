@@ -1,0 +1,87 @@
+###Terms###
+a               rdf:type
+Ontology        owl:Ontology
+DataProperty    owl:DatatypeProperty
+ObjectProperty  owl:ObjectProperty
+subProperty     rdfs:subPropertyOf
+subClass        rdfs:subClassOf
+inverseOf       owl:inverseOf
+Individual      owl:NamedIndividual
+Class           owl:Class
+domain          rdfs:domain
+range           rdfs:range
+String          xsd:string
+Int             xsd:integer
+Float           xsd:float
+Double          xsd:double
+
+###Classes###
+Person          foaf:Person
+Country         schema:Country
+Place           schema:Place
+Event           schema:Event
+Gallery         schema:ImageGallery
+Album           schema:ImageGallery
+Image           foaf:Image
+Group           foaf:Group
+Address         schema:PostalAdress
+Organization    schema:Organization
+
+Pessoa          foaf:Person
+Pais            schema:Country
+Local           schema:Place
+Evento          schema:Event
+Galeria         schema:ImageGallery
+Imagem          foaf:Image
+Grupo           foaf:Group
+CodigoPostal    schema:PostalAdress
+Organizacao     schema:Organization
+
+###DatatypeProperties###
+name            foaf:name           Thing           String
+age             foaf:age            Person          Int
+gender          foaf:gender         Person          String
+caption         schema:caption      Thing           String
+title           schema:caption      Thing           String
+email           schema:email        Thing           String
+
+nome            foaf:name           Thing           String
+idade           foaf:age            Person          Int
+genero          foaf:gender         Person          String
+sexo            foaf:gender         Person          String
+titulo          schema:caption      Thing           String
+
+
+###ObjectProperties###
+image           foaf:img            Person      Image
+photo           foaf:img            Person      Image
+depicts         foaf:depicts        Image       Thing
+description     dc:description      Thing       Thing
+address         schema:address      Thing       PostalAdress
+affiliated      schema:affiliation  Person      Organization  
+birthplace      schema:birthPlace   Person      Place
+hasChild        schema:children     Person      Person
+hasEvent        schema:event        Thing       Event
+hasParent       schema:parent       Person      Person
+hasSibling      schema:sibling      Person      Person
+hasSpouse       schema:spouse       Person      Person
+
+imagem          foaf:img            Person      Image
+foto            foaf:img            Person      Image
+retrata         foaf:depicts        Image       Thing
+data            dc:date             Thing       Thing
+descricao       dc:description      Thing       Thing
+codigoPostal    schema:address      Thing       PostalAdress
+afiliado        schema:affiliation  Person      Organization  
+localNascimento schema:birthPlace   Person      Place
+temFilho        schema:children     Person      Person
+temFilha        schema:children     Person      Person
+temEvento       schema:event        Thing       Event
+temPai          schema:parent       Person      Person
+temMae          schema:parent       Person      Person
+temIrmao        schema:sibling      Person      Person
+temIrma         schema:sibling      Person      Person
+temEsposo       schema:spouse       Person      Person
+temEsposa       schema:spouse       Person      Person
+
+

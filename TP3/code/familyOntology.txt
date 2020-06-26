@@ -1,0 +1,201 @@
+Ontology    FamilyTest.
+
+Person  a   Class.
+House   a   Class.
+Event   a   Class.
+Institution a   Class.
+Place   a   Class.
+Image   a   Class;
+        subClass    MediaObject.
+MediaObject a   Class.
+Album   a   Class.
+Chronology	a	Class.
+
+
+
+
+name    a   DatatypeProperty;
+        domain  Person;
+        range   String.
+
+age     a   DatatypeProperty;
+        domain  Person;
+        range   Int.
+
+gender  a   DatatypeProperty;
+        domain  Person;
+        range   String.
+
+biography   a   DatatypeProperty;
+            range   String.
+
+title   a   DatatypeProperty;
+            range   String.
+
+description a   DatatypeProperty;
+            domain  Event;
+            range   String.
+
+email   a   DatatypeProperty;
+        domain  Person;
+        range   String.
+
+date    a   DatatypeProperty;
+        range   String.
+
+birthdate	a   DatatypeProperty;
+            domain  Person;
+            range   String.
+
+contentUrl	a	DatatypeProperty;
+			domain	Image;
+			range	String.
+
+
+
+
+hasParent   a   ObjectProperty;
+            domain  Person;
+            range   Person.
+
+hasChild   a   ObjectProperty;
+            domain  Person;
+            range   Person.
+
+hasSibling   a   ObjectProperty;
+            domain  Person;
+            range   Person.
+
+hasSpouse   a   ObjectProperty;
+            domain  Person;
+            range   Person.
+
+hasEvent    a   ObjectProperty;
+            range   Event.
+
+image   a   ObjectProperty;
+        range   Image.
+
+worksFor    a   ObjectProperty;
+            domain  Person;
+            range   Institution.
+
+depicts     a   ObjectProperty;
+			inverseOf	image;
+            domain  Image.
+
+livesIn     a   ObjectProperty;
+            domain  Person.
+
+birthplace	a   ObjectProperty;
+            domain  Person;
+            range   Place.
+
+
+Ana		a	Individual;
+		a	Person;
+		name	"Ana";
+		age		21;
+		gender	"F";
+		email	"ana@gmail.com";
+		birthdate	"12-10-1998";
+		livesIn	HouseID1;
+		birthplace	Braga;
+		hasSibling	Jose;
+		hasParent	Marta;
+		hasParent	Antonio.
+
+Jose	a	Individual;
+		a	Person;
+		name	"José";
+		gender	"M";
+		age		17;
+		email	"jose@gmail.com";
+		birthdate	"10-12-2002";
+		livesIn	HouseID1;
+		birthplace	Braga;
+		hasParent	Marta;
+		hasParent	Antonio;
+		hasSibling	Ana.
+
+Marta	a	Individual;
+		a	Person;
+		name	"Marta";
+		gender	"F";
+		age		49;
+		birthplace	Braga;
+		livesIn	HouseID1;
+		hasSpouse	Antonio;
+		hasChild	Ana;
+		hasChild	Jose;
+		worksFor	InstID1.
+
+Antonio	a	Individual;
+		a	Person;
+		name	"António";
+		age		52;
+		biography	"Lorem ipsum dolor sit amet, augue graecis dignissim cu vix, probo laudem ad duo. Vim ad postea menandri reprehendunt, vix in timeam invidunt necessitatibus. ";
+		birthplace	Braga;
+		livesIn	HouseID1;
+		hasSpouse	Marta;
+		hasChild	Ana;
+		hasChild	Jose;
+		worksFor	InstID1.
+
+HouseID1	a	Individual;
+			a	House.
+
+InstID1		a	Individual;
+			a	Institution.
+
+Braga		a	Individual;
+			a	Place.
+
+Marriage1	a	Individual;
+			a	Event;
+			date	"21-01-1993";
+			description	"Marriage of Marta and Antonio.".
+
+BirthOfAna	a	Individual;
+			a	Event;
+			date	"12-10-2002".
+
+BirthOfJose	a	Individual;
+			a	Event;
+			date	"10-12-2002".
+
+ChronologyID1	a	Individual;
+				a	Chronology;
+				hasEvent	Marriage1;
+				hasEvent	BirthOfAna;
+				hasEvent	BirthOfJose.
+
+Img1	a	Individual;
+		a	Image;
+		contentUrl	"img1.png";
+		depicts	Ana.
+
+Img2	a	Individual;
+		a	Image;
+		contentUrl	"img2.png";
+		depicts	Jose.
+
+Img3	a	Individual;
+		a	Image;
+		contentUrl	"img3.png";
+		title	"Family House";
+		depicts	HouseID1.
+
+Img4	a	Individual;
+		a	Image;
+		contentUrl	"img4.png";
+		date	"13-08-2016";
+		depicts	Antonio;
+		depicts	Marta.
+
+FamilyAlbum		a	Individual;
+				a	Album;
+				image	Img1;
+				image	Img2;
+				image	Img3;
+				image	Img4.

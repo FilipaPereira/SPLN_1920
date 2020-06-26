@@ -1,0 +1,270 @@
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix : <http://ontology/2020/FamilyTest#> .
+@base <http://ontology/2020/FamilyTest> .
+
+<http://ontology/2020/FamilyTest> rdf:type owl:Ontology .
+
+
+########## Classes ##########
+
+### http://ontology/2020/FamilyTest#Person
+foaf:Person rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#House
+:House rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Event
+schema:Event rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Institution
+:Institution rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Place
+schema:Place rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Image
+foaf:Image rdf:type owl:Class ;
+	 rdfs:subClassOf :MediaObject .
+
+### http://ontology/2020/FamilyTest#MediaObject
+:MediaObject rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Album
+schema:ImageGallery rdf:type owl:Class .
+
+### http://ontology/2020/FamilyTest#Chronology
+:Chronology rdf:type owl:Class .
+
+########## DataType Properties ##########
+
+### http://ontology/2020/FamilyTest#name
+foaf:name rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#age
+foaf:age rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range xsd:integer .
+
+### http://ontology/2020/FamilyTest#gender
+foaf:gender rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#biography
+:biography rdf:type :DatatypeProperty ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#title
+schema:caption rdf:type :DatatypeProperty ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#description
+:description rdf:type :DatatypeProperty ;
+	 rdfs:domain schema:Event ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#email
+schema:email rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#date
+:date rdf:type :DatatypeProperty ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#birthdate
+:birthdate rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range xsd:string .
+
+### http://ontology/2020/FamilyTest#contentUrl
+:contentUrl rdf:type :DatatypeProperty ;
+	 rdfs:domain foaf:Image ;
+	 rdfs:range xsd:string .
+
+########## Object Properties ##########
+
+### http://ontology/2020/FamilyTest#hasParent
+schema:parent rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range foaf:Person .
+
+### http://ontology/2020/FamilyTest#hasChild
+schema:children rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range foaf:Person .
+
+### http://ontology/2020/FamilyTest#hasSibling
+schema:sibling rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range foaf:Person .
+
+### http://ontology/2020/FamilyTest#hasSpouse
+schema:spouse rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range foaf:Person .
+
+### http://ontology/2020/FamilyTest#hasEvent
+schema:event rdf:type owl:ObjectProperty ;
+	 rdfs:range schema:Event .
+
+### http://ontology/2020/FamilyTest#image
+foaf:img rdf:type owl:ObjectProperty ;
+	 rdfs:range foaf:Image .
+
+### http://ontology/2020/FamilyTest#worksFor
+:worksFor rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range :Institution .
+
+### http://ontology/2020/FamilyTest#depicts
+foaf:depicts rdf:type owl:ObjectProperty ;
+	 owl:inverseOf foaf:img ;
+	 rdfs:domain foaf:Image .
+
+### http://ontology/2020/FamilyTest#livesIn
+:livesIn rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person .
+
+### http://ontology/2020/FamilyTest#birthplace
+schema:birthPlace rdf:type owl:ObjectProperty ;
+	 rdfs:domain foaf:Person ;
+	 rdfs:range schema:Place .
+
+########## Individuals ##########
+
+### http://ontology/2020/FamilyTest#Ana
+:Ana rdf:type owl:NamedIndividual ,
+	 	 foaf:Person ;
+	 foaf:name "Ana"^^xsd:string ;
+	 foaf:age 21 ;
+	 foaf:gender "F"^^xsd:string ;
+	 schema:email "ana@gmail.com"^^xsd:string ;
+	 :birthdate "12-10-1998"^^xsd:string ;
+	 :livesIn :HouseID1 ;
+	 schema:birthPlace :Braga ;
+	 schema:sibling :Jose ;
+	 schema:parent :Marta ,
+	 	 :Antonio .
+
+### http://ontology/2020/FamilyTest#Jose
+:Jose rdf:type owl:NamedIndividual ,
+	 	 foaf:Person ;
+	 foaf:name "José"^^xsd:string ;
+	 foaf:gender "M"^^xsd:string ;
+	 foaf:age 17 ;
+	 schema:email "jose@gmail.com"^^xsd:string ;
+	 :birthdate "10-12-2002"^^xsd:string ;
+	 :livesIn :HouseID1 ;
+	 schema:birthPlace :Braga ;
+	 schema:parent :Marta ,
+	 	 :Antonio ;
+	 schema:sibling :Ana .
+
+### http://ontology/2020/FamilyTest#Marta
+:Marta rdf:type owl:NamedIndividual ,
+	 	 foaf:Person ;
+	 foaf:name "Marta"^^xsd:string ;
+	 foaf:gender "F"^^xsd:string ;
+	 foaf:age 49 ;
+	 schema:birthPlace :Braga ;
+	 :livesIn :HouseID1 ;
+	 schema:spouse :Antonio ;
+	 schema:children :Ana ,
+	 	 :Jose ;
+	 :worksFor :InstID1 .
+
+### http://ontology/2020/FamilyTest#Antonio
+:Antonio rdf:type owl:NamedIndividual ,
+	 	 foaf:Person ;
+	 foaf:name "António"^^xsd:string ;
+	 foaf:age 52 ;
+	 :biography "Lorem ipsum dolor sit amet, augue graecis dignissim cu vix, probo laudem ad duo. Vim ad postea menandri reprehendunt, vix in timeam invidunt necessitatibus. "^^xsd:string ;
+	 schema:birthPlace :Braga ;
+	 :livesIn :HouseID1 ;
+	 schema:spouse :Marta ;
+	 schema:children :Ana ,
+	 	 :Jose ;
+	 :worksFor :InstID1 .
+
+### http://ontology/2020/FamilyTest#HouseID1
+:HouseID1 rdf:type owl:NamedIndividual ,
+	 	 :House .
+
+### http://ontology/2020/FamilyTest#InstID1
+:InstID1 rdf:type owl:NamedIndividual ,
+	 	 :Institution .
+
+### http://ontology/2020/FamilyTest#Braga
+:Braga rdf:type owl:NamedIndividual ,
+	 	 schema:Place .
+
+### http://ontology/2020/FamilyTest#Marriage1
+:Marriage1 rdf:type owl:NamedIndividual ,
+	 	 schema:Event ;
+	 :date "21-01-1993"^^xsd:string ;
+	 :description "Marriage of Marta and Antonio"^^xsd:string .
+
+### http://ontology/2020/FamilyTest#BirthOfAna
+:BirthOfAna rdf:type owl:NamedIndividual ,
+	 	 schema:Event ;
+	 :date "12-10-2002"^^xsd:string .
+
+### http://ontology/2020/FamilyTest#BirthOfJose
+:BirthOfJose rdf:type owl:NamedIndividual ,
+	 	 schema:Event ;
+	 :date "10-12-2002"^^xsd:string .
+
+### http://ontology/2020/FamilyTest#ChronologyID1
+:ChronologyID1 rdf:type owl:NamedIndividual ,
+	 	 :Chronology ;
+	 schema:event :Marriage1 ,
+	 	 :BirthOfAna ,
+	 	 :BirthOfJose .
+
+### http://ontology/2020/FamilyTest#Img1
+:Img1 rdf:type owl:NamedIndividual ,
+	 	 foaf:Image ;
+	 :contentUrl "img1.png"^^xsd:string ;
+	 foaf:depicts :Ana .
+
+### http://ontology/2020/FamilyTest#Img2
+:Img2 rdf:type owl:NamedIndividual ,
+	 	 foaf:Image ;
+	 :contentUrl "img2.png"^^xsd:string ;
+	 foaf:depicts :Jose .
+
+### http://ontology/2020/FamilyTest#Img3
+:Img3 rdf:type owl:NamedIndividual ,
+	 	 foaf:Image ;
+	 :contentUrl "img3.png"^^xsd:string ;
+	 schema:caption "Family House"^^xsd:string ;
+	 foaf:depicts :HouseID1 .
+
+### http://ontology/2020/FamilyTest#Img4
+:Img4 rdf:type owl:NamedIndividual ,
+	 	 foaf:Image ;
+	 :contentUrl "img4.png"^^xsd:string ;
+	 :date "13-08-2016"^^xsd:string ;
+	 foaf:depicts :Antonio ,
+	 	 :Marta .
+
+### http://ontology/2020/FamilyTest#FamilyAlbum
+:FamilyAlbum rdf:type owl:NamedIndividual ,
+	 	 schema:ImageGallery ;
+	 foaf:img :Img1 ,
+	 	 :Img2 ,
+	 	 :Img3 ,
+	 	 :Img4 .
+
