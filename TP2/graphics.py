@@ -164,11 +164,24 @@ def mar_words(file):
         if re.search(mar_w, w):
             marOccur[w] = marOccur.get(w, 0) + 1
 
-    names = list(marOccur.keys())
-    occurs = list(marOccur.values())
-    print(names)
-    print(occurs)
+    for k,v in list(marOccur.items()):
+        if v < 6:
+            marOccur.pop(k)
 
+    names = list(marOccur.keys())
+    values = list(marOccur.values())
+    print(names)
+    print(values)
+   
+    
+   
+
+    fig, axs = plt.subplots(1, 3, figsize=(9, 3), sharey=True)
+    axs[0].bar(names, values, width=0.4)
+    axs[1].scatter(names, values)
+    axs[2].plot(names, values)
+    fig.suptitle('Categorical Plotting')
+    plt.show()
 
 def prompter():
     while 1:
